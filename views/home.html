@@ -1,8 +1,4 @@
 <div class="container">
-  
-  <div class="page-header text-center">       
-    <h1>thea2gether</h1>        
-  </div>
 
   <p class="text-center">    
     <button class="btn btn-primary" data-toggle="modal" id="makeRoom" data-target="#newRoom">start a room</button>
@@ -22,13 +18,7 @@
                 </p>
               </li>
             </ul>
-            <!-- push a new message onto the array -->
-            <form ng-submit="addRoom(form)">
-              <input ng-model="form.roomTitle"/>
-              <input ng-model="form.roomDesc"/>
-              <input ng-model="form.youtubeUrl"/>
-              <button type="submit">Add Room</button>
-            </form>
+            
         </div>
         <div class="row">
              <div class="col-sm-6 col-md-3">
@@ -80,7 +70,13 @@
         <h4 class="modal-title">Create Room</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <!-- push a new message onto the array -->
+            <form ng-submit="addRoom(form)">
+              <input ng-model="form.roomTitle"/>
+              <input ng-model="form.roomDesc"/>
+              <input ng-model="form.youtubeUrl"/>
+              <button type="submit">Add Room</button>
+            </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
