@@ -56,24 +56,38 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
   $scope.rooms = $firebaseArray(ref);
 
   $scope.addRoom = function(form) {
-  	console.log("Adding a room");
-  	$scope.rooms.$add({
-  		roomTitle: form.roomTitle,
-  		roomDesc: form.roomDesc,
-  		youtubeUrl: form.youtubeUrl,
-  		messages: []
-  	}).then(function(ref){
-  		// After we added the room
-  		console.log('Added a room');
-  		ref.on('value', function(snapshot) {
-  			// what to do when the value of the room changes
-  			console.log("Room was changed")
-  			console.log(snapshot.val().roomTitle);
-  		});
-  		var roomNumber = ref.key();
-  		
-  		console.log(roomNumber);
-  	});
+      var url = $('#youTubeUrl').val();
+      if (url != undefined || url != '') {
+          var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+          var match = url.match(regExp);
+          if (match && match[2].length == 11) {
+              // Do anything for being valid
+              // if need to change the url to embed url then use below line
+              $('#videoObject').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=1&enablejsapi=1');
+			  console.log("Adding a room");
+			  $scope.rooms.$add({
+				  roomTitle: form.roomTitle,
+				  roomDesc: form.roomDesc,
+				  youtubeUrl: form.youtubeUrl,
+				  messages: []
+			  }).then(function(ref){
+				  // After we added the room
+				  console.log('Added a room');
+				  ref.on('value', function(snapshot) {
+					  // what to do when the value of the room changes
+					  console.log("Room was changed")
+					  console.log(snapshot.val().roomTitle);
+				  });
+				  var roomNumber = ref.key();
+
+				  console.log(roomNumber);
+			  });
+          } else {
+              alert('not valid');
+              // Do anything for not being valid
+          }
+      }
+
   };
 });
 
