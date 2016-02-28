@@ -83,7 +83,8 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 				  roomTitle: form.roomTitle,
 				  roomDesc: form.roomDesc,
 				  youtubeUrl: form.youtubeUrl,
-				  messages: []
+				  messages: [],
+          currentTime: 0
 			  }).then(function(ref){
 				  var roomNumber = ref.key();
           ref.child('id').set(roomNumber);
@@ -100,11 +101,12 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 });
 
 
-app.controller('RoomController', function( $scope, $routeParams, $firebaseArray, $firebase, $firebaseObject, $sce) {
+app.controller('RoomController', function($rootScope, $scope, $routeParams, $firebaseArray, $firebase, $firebaseObject, $sce) {
 
   $scope.roomId = $routeParams.roomId;
   var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
   var room = ref.child($scope.roomId);
+  $scope.roomRef = ref.child($scope.roomId);
   var messages = room.child("messages");
   $scope.room = $firebaseObject(room);
   $scope.messages = $firebaseArray(messages);
@@ -132,5 +134,57 @@ app.controller('RoomController', function( $scope, $routeParams, $firebaseArray,
       $scope.message = "";
     });
   }
+
+  var tag = document.createElement('script');
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  window.onYouTubeIframeAPIReady = function() {
+    console.log('youtube is ready');
+    $scope.$watch('room', function(newValue, oldValue){
+      console.log(newValue);
+      $scope.player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: $scope.getId(newValue.youtubeUrl),
+        events: {
+          'onReady': $scope.onPlayerReady,
+          // 'onStateChange': onPlayerStateChange
+        }
+      });
+    });
+    
+  }
+
+  // 4. The API will call this function when the video player is ready.
+  $scope.onPlayerReady = function(event) {
+    // console.log($scope.roomRef.child('currentTime').toString());
+    event.target.playVideo();
+    $scope.currentTimeRef = $scope.roomRef.child('currentTime');
+    $scope.currentTimeRef.on("value", function(snapshot){
+      event.target.seekTo(snapshot.val());
+    })
+    
+    setInterval(function(){
+       room.update({currentTime: $scope.player.getCurrentTime()});
+    },500);
+  }
+
+  // 5. The API calls this function when the player's state changes.
+  //    The function indicates that when playing a video (state=1),
+  //    the player should play for six seconds and then stop.
+  // var done = false;
+  // function onPlayerStateChange(event) {
+  //   console.log($scope.player.getCurrentTime());
+  //   if (event.data == YT.PlayerState.PLAYING && !done) {
+  //     setTimeout(stopVideo, 6000);
+  //     done = true;
+  //   }
+  // }
+  // function stopVideo() {
+  //   $scope.player.stopVideo();
+  // }
   
 });
