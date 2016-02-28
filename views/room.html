@@ -7,14 +7,14 @@
 	</div>
 </div>
 <!-- <input type="text" name="user" ng-model="user" placeholder="Name"> -->
-{{rootScope.authData}}
-<div ng-show="rootScope.authData">
+
+<div ng-show="$parent.isLoggedIn()">
 	<form ng-submit="addMessage()">
 		<label ng-bind="getUsername()"></label>
 		<input type="text" name="text" ng-model="message" placeholder="Message">
 	</form>
 </div>
-<div ng-hide="rootScope.authData">
+<div ng-hide="$parent.isLoggedIn()">
 	<p>Please login to leave messages</p>
 </div>
 

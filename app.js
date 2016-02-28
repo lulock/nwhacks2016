@@ -18,7 +18,6 @@ app.config(['$routeProvider',
 
 app.controller('MainController', function($scope) {
 	var ref = new Firebase("https://thea2gether.firebaseio.com/");
-	$scope.authData = ref.getAuth();
 
 	$scope.createUser = function(createUserData) {
 		if (createUserData.password1 != createUserData.password2) {
@@ -54,8 +53,6 @@ app.controller('MainController', function($scope) {
 				console.log("Login Failed!", error);
 			} else {
 				console.log("Authenticated successfully with payload:", authData);
-				$scope.authData = ref.getAuth();
-				console.log(ref.getAuth());
 			}
 		});
 	};
@@ -63,12 +60,9 @@ app.controller('MainController', function($scope) {
 	$scope.logoutUser = function() {
 		console.log("Logging out")
 		ref.unauth();
-		$scope.authData = ref.getAuth();
 	};
 
 	$scope.isLoggedIn = function() {
-		console.log("Checking if the user is logged in: ");
-		console.log(ref.getAuth() != null);
 		return ref.getAuth() != null;
 	}
 
