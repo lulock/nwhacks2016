@@ -72,14 +72,17 @@
       <div class="modal-body">
         <!-- push a new message onto the array -->
             <form ng-submit="addRoom(form)">
-              <input ng-model="form.roomTitle"/>
-              <input ng-model="form.roomDesc"/>
-              <input ng-model="form.youtubeUrl"/>
-              <button type="submit">Add Room</button>
+              <input ng-model="form.roomTitle" class="form-control form-control-lg" type="text" placeholder="title" required>
+              <br>
+              <input ng-model="form.roomDesc"class="form-control form-control-lg" type="text" placeholder="description" required>
+              <br>
+              <input ng-model="form.youtubeUrl"class="form-control form-control-lg" type="text" placeholder="url"required>
+              <br>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Add Room</button>
+                <button class="btn btn-primary " type="button" data-dismiss="modal">Close</button>
+              </div>
             </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
