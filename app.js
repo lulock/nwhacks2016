@@ -1,4 +1,3 @@
-var Firebase = require("firebase");
 
 // create our angular module and inject firebase
 angular.module('theatreApp', ['firebase', 'ngRoute'])
