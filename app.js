@@ -71,16 +71,11 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 				  youtubeUrl: form.youtubeUrl,
 				  messages: []
 			  }).then(function(ref){
-				  // After we added the room
-				  console.log('Added a room');
-				  ref.on('value', function(snapshot) {
-					  // what to do when the value of the room changes
-					  console.log("Room was changed")
-					  console.log(snapshot.val().roomTitle);
-				  });
 				  var roomNumber = ref.key();
-
-				  console.log(roomNumber);
+          ref.child('id').set(roomNumber);
+				  ref.on('value', function(snapshot) {
+            //on change
+				  });
 			  });
           } else {
               alert('not valid');
@@ -94,7 +89,7 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 app.controller('RoomController', function($scope, $routeParams, $firebaseArray, $firebase, $firebaseObject) {
   $scope.roomId = $routeParams.roomId;
   var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
-  var messages = ref.child($scope.roomId+"/messages");
+  var messages = ref.child($scope.roomId).child("messages");
   $scope.messages = $firebaseArray(messages);
 
   $scope.user = "";
