@@ -1,8 +1,15 @@
 var app = angular.module('theatreApp', ['firebase', 'ngRoute']);
 
 //routes
-app.config(['$routeProvider',
-  function($routeProvider) {
+app.config(['$routeProvider',"$sceDelegateProvider",
+  function($routeProvider, $sceDelegateProvider) {
+	  $sceDelegateProvider.resourceUrlWhitelist([
+		  'self',
+		  'https://www.youtu.be/**',
+		  'https://www.youtube.com/**'
+	  ]);
+
+
     $routeProvider.
       when('/rooms/:roomId', {
         templateUrl: 'views/room.html',
@@ -53,7 +60,7 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
   };
 
 
-	$scope.getId = function youtube_parser(url){
+	$scope.getId = function(url){
 		var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 		var match = url.match(regExp);
 		return (match&&match[7].length==11)? match[7] : false;
@@ -61,9 +68,9 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 
   // create a synchronized array
   $scope.rooms = $firebaseArray(ref);
-
   $scope.addRoom = function(form) {
       var url = $('#youTubeUrl').val();
+	  $scope.yturl = url.replace("watch?v=", "v/");
       if (url != undefined || url != '') {
           var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
           var match = url.match(regExp);
@@ -93,14 +100,27 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 });
 
 
-app.controller('RoomController', function($scope, $routeParams, $firebaseArray, $firebase, $firebaseObject) {
+app.controller('RoomController', function( $scope, $routeParams, $firebaseArray, $firebase, $firebaseObject, $sce) {
+
   $scope.roomId = $routeParams.roomId;
   var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
   var room = ref.child($scope.roomId);
   var messages = room.child("messages");
   $scope.room = $firebaseObject(room);
   $scope.messages = $firebaseArray(messages);
+	//$scope.yturl = $sce.trustAsResourceUrl('/www.youtube.com/embed/'+ $rootScope.getId($scope.room.youtubeUrl));
+	console.log($scope.room.youtubeUrl);
 
+	$scope.getId = function(url){
+		var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+		var match = url.match(regExp);
+		console.log(url);
+		return (match&&match[7].length==11)? match[7] : false;
+	}
+
+	$scope.getUrl= function(url){
+		return 'https://www.youtube.com/embed/' + $scope.getId(url);
+	}
   $scope.user = "";
   $scope.message = "";
 
