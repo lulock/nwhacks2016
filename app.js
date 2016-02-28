@@ -89,7 +89,9 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 app.controller('RoomController', function($scope, $routeParams, $firebaseArray, $firebase, $firebaseObject) {
   $scope.roomId = $routeParams.roomId;
   var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
-  var messages = ref.child($scope.roomId).child("messages");
+  var room = ref.child($scope.roomId);
+  var messages = room.child("messages");
+  $scope.room = $firebaseObject(room);
   $scope.messages = $firebaseArray(messages);
 
   $scope.user = "";
