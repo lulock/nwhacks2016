@@ -23,41 +23,72 @@ app.config(['$routeProvider',"$sceDelegateProvider",
 	}
 ]);
 
+app.controller('MainController', function($scope) {
+	var ref = new Firebase("https://thea2gether.firebaseio.com/");
+
+	$scope.createUser = function(createUserData) {
+		if (createUserData.password1 != createUserData.password2) {
+			alert("Your passwords don't match!");
+			return;
+		}
+		ref.createUser({
+			email: createUserData.email,
+			password: createUserData.password1,
+		}, function(error, userData) {
+			if (error) {
+				console.log("Error creating user:", error);
+				alert(error);
+			} else {
+				console.log(userData.uid);
+				// storing user's username
+				var userRef = ref.child("users").child(userData.uid);
+				userRef.set({
+					username: createUserData.username
+				});
+				console.log("Successfully created user account with uid:", userData.uid);
+			}
+		});
+	};
+
+	$scope.loginUser = function(loginUserData) {
+		ref.authWithPassword({
+			email    : loginUserData.email,
+			password : loginUserData.password
+		}, function(error, authData) {
+			remember: 'sessionOnly'
+			if (error) {
+				console.log("Login Failed!", error);
+			} else {
+				console.log("Authenticated successfully with payload:", authData);
+        $scope.$apply();
+			}
+		});
+	};
+
+	$scope.logoutUser = function() {
+		console.log("Logging out")
+		ref.unauth();
+	};
+
+	$scope.isLoggedIn = function() {
+		return ref.getAuth() != null;
+	}
+
+	$scope.getUsername = function() {
+		console.log("Get username");
+		if (ref.getAuth() == null) return "";
+		console.log(ref.getAuth().uid);
+		var usernameRef = ref.child("users").child(ref.getAuth().uid).child("username");
+		var username = usernameRef.once("value", function(snap) {
+			$scope.username = snap.val();
+		});
+		console.log($scope.username);
+		return $scope.username;
+	}
+});
 
 app.controller('HomeController', function($scope, $firebaseArray, $firebase, $firebaseObject) {
-
   var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
-
-  $scope.createUser = function(email, password, username) {
-  	ref.createUser({
-  		email: email,
-  		password: password,
-  	}, function(errorUserData) {
-  		if (error) {
-  			console.log("Error creating user:", error);
-  		} else {
-  			// storing user's username
-  			var userRef = new ref.child("users/" + userData.uid);
-  			userRef.set({
-  				username: username
-  			});
-  			console.log("Successfully created user account with uid:", userData.uid);
-  		}
-  	});
-  };
-
-  $scope.loginUser = function(email, password) {
-  	ref.authWithPassword({
-  		email    : email,
-  		password : password
-  	}, function(error, authData) {
-  		if (error) {
-  			console.log("Login Failed!", error);
-  		} else {
-  			console.log("Authenticated successfully with payload:", authData);
-  		}
-  	});
-  };
 
 
 	$scope.getId = function(url){
@@ -96,6 +127,26 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
               // Do anything for not being valid
           }
       }
+  	console.log("Adding a room");
+  	$scope.rooms.$add({
+  		roomTitle: form.roomTitle,
+  		roomDesc: form.roomDesc,
+  		youtubeUrl: form.youtubeUrl,
+  		messages: []
+  	}).then(function(ref){
+  		var roomNumber = ref.key();
+
+  		// After we added the room
+  		console.log('Added a room');
+  		ref.child('id').set(roomNumber);
+  		ref.on('value', function(snapshot) {
+  			// what to do when the value of the room changes
+  			console.log("Room was changed")
+  			console.log(snapshot.val().roomTitle);
+  		});
+  		
+  		console.log(roomNumber);
+  	});
   };
 });
 
@@ -126,7 +177,7 @@ app.controller('RoomController', function( $scope, $routeParams, $firebaseArray,
 
   $scope.addMessage = function() {
     $scope.messages.$add({
-      user: $scope.user,
+      user: $scope.getUsername(),
       text: $scope.message
     }).then(function(ref){
       $scope.message = "";

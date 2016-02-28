@@ -19,9 +19,26 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
 </head>
-<body ng-app="theatreApp">
+<body ng-app="theatreApp" ng-controller="MainController">
     <div class="page-header text-center">       
     <h1>thea2gether</h1>        
+    <form ng-submit="createUser(createUserData)" ng-hide="isLoggedIn()">
+      <input ng-model="createUserData.email" placeholder="Email"/>
+      <input ng-model="createUserData.username"placeholder="Username"/>
+      <input ng-model="createUserData.password1" type="password" placeholder="Password"/>
+      <input ng-model="createUserData.password2" type="password" placeholder="Repeat password"/>
+      <button type="submit">Sign up</button>
+    </form>
+
+    <form ng-submit="loginUser(loginUserData)" ng-hide="isLoggedIn()">
+      <input ng-model="loginUserData.email" placeholder="Email"/>
+      <input ng-model="loginUserData.password" type="password" placeholder="Password"/>
+      <button type="submit">Log in</button>
+    </form>
+
+    <form ng-submit="logoutUser()" ng-show="isLoggedIn()">
+      <button type="submit">Log out</button>
+    </form>
   </div>
     <div ng-view></div>
 </body>
