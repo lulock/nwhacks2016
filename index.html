@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><3thea2gether<3</title>
+    <title ng-bind="<3thea2gether<3"></title>
 
     <!-- CSS -->
     <!-- load Bootstrap and custom style.css -->
@@ -17,62 +17,7 @@
     <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
     <script src="app.js"></script>
 </head>
-<body>
-<div class="container" ng-app="theatreApp" ng-controller="mainController">
-  
-  <div class="page-header text-center">       
-    <h1>thea2gether</h1>        
-  </div>
-
-  <p class="text-center">    
-    <a href="#" class="btn btn-primary">start a room</a>
-  </p>
-
-  <section id="rooms", class="panel panel-default">
-    <div class="panel-heading">Active Rooms</div>
-    <div class="panel-body">
-    <div class="container">
-        <div class="row">
-             <div class="col-sm-6 col-md-3">
-                <div class="panel panel-default panel-card">
-                    <div class="panel-heading">
-                        <img src="img/YouTube_icon.png" />
-                    </div>
-                    
-                    <div class="panel-body text-center">
-                        <h4 class="panel-header"><a href="">@room host</a></h4>
-                        <small>description of room.</small>
-                    </div>
-                    <div class="panel-thumbnails">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-log-in"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-heart"></i></button>
-
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-fire"></i></button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>   
-        </div>  
-        </div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-</div>  
+<body ng-app="theatreApp">
+    <div ng-view></div>
 </body>
 </html>
