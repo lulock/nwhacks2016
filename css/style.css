@@ -7,7 +7,8 @@ Image placeholders: placemi.com
 #rooms{
     padding-top: 0px;
     padding-bottom: 10px;
-    background-color: #fff;    
+    background-color: #fff;
+    overflow: hidden;    
 }
 
 /********************************/

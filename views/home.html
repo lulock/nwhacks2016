@@ -4,62 +4,50 @@
     <button class="btn btn-primary" data-toggle="modal" id="makeRoom" data-target="#newRoom">start a room</button>
   </p>
 
-  <section id="rooms", class="panel panel-default">
+  <section id="rooms", class="panel panel-default" class="carousel slide">
     <div class="panel-heading">Active Rooms</div>
     <div class="panel-body">
-    <div class="container">
+      <div class="container">
         <div class="row">
-            <ul>
-              <li ng-repeat="room in rooms">
-                <p>
-                  <span ng-bind="room.roomTitle"></span>
-                  <span ng-bind="room.roomDesc"></span>
-                  <span ng-bind="room.youtubeUrl"></span>
-                </p>
-              </li>
-            </ul>
-            
-        </div>
-        <div class="row">
-             <div class="col-sm-6 col-md-3">
-                <div class="panel panel-default panel-card">
-                    <div class="panel-heading">
-                        <img src="img/YouTube_icon.png" />
-                    </div>
-                    
-                    <div class="panel-body text-center">
-                        <h4 class="panel-header"><a href="">@room host</a></h4>
-                        <small>description of room.</small>
-                    </div>
-                    <div class="panel-thumbnails">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-log-in"></i></button>
+             <div ng-repeat="room in rooms"class="col-sm-6 col-md-3">
+              <div class="panel panel-default panel-card">
+                <div class="panel-heading">
+                  <img src="img/YouTube_icon.png" />
+                </div>
 
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-heart"></i></button>
+                <div class="panel-body text-center">
+                  <h4 class="panel-header"><a href=""><span ng-bind="room.roomTitle"></span></a></h4>
+                  <small><span ng-bind="room.roomDesc"></span></small>
+                </div>
+                <div class="panel-thumbnails">
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <div class="">
+                        <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-log-in"></i></button>
 
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-fire"></i></button>
-
-                                </div>
-                            </div>
-                        </div>
+                      </div>
                     </div>
-                </div>   
-	        </div>  
-        </div>
+                    <div class="col-xs-4">
+                      <div class="">
+                        <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-heart"></i></button>
+
+                      </div>
+                    </div>
+                    <div class="col-xs-4">
+                      <div class="">
+                        <button type="button" class="btn btn-danger btn-circle btn-xl"><i class="glyphicon glyphicon-fire"></i></button>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>   
+            </div>
       </div>
     </div>
-  </section>
-  <!-- New Room Modal -->
+  </div>
+</section>
+<!-- New Room Modal -->
 <div id="newRoom" class="modal fade in" role="dialog" style="display:none;">
   <div class="modal-dialog">
 
@@ -71,18 +59,18 @@
       </div>
       <div class="modal-body">
         <!-- push a new message onto the array -->
-            <form ng-submit="addRoom(form)">
-              <input ng-model="form.roomTitle" class="form-control form-control-lg" type="text" placeholder="title" required>
-              <br>
-              <input ng-model="form.roomDesc"class="form-control form-control-lg" type="text" placeholder="description" required>
-              <br>
-              <input ng-model="form.youtubeUrl"class="form-control form-control-lg" type="text" placeholder="url"required>
-              <br>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-success">Add Room</button>
-                <button class="btn btn-primary " type="button" data-dismiss="modal">Close</button>
-              </div>
-            </form>
+        <form ng-submit="addRoom(form)">
+          <input ng-model="form.roomTitle" class="form-control form-control-lg" type="text" placeholder="title" required>
+          <br>
+          <input ng-model="form.roomDesc"class="form-control form-control-lg" type="text" placeholder="description" required>
+          <br>
+          <input ng-model="form.youtubeUrl"class="form-control form-control-lg" type="text" placeholder="url"required>
+          <br>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Add Room</button>
+            <button class="btn btn-primary " type="button" data-dismiss="modal">Close</button>
+          </div>
+        </form>
       </div>
     </div>
 
