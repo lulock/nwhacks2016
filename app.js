@@ -87,11 +87,26 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
               // Do anything for not being valid
           }
       }
-
   };
 });
 
 
-app.controller('RoomController', function($scope, $routeParams) {
+app.controller('RoomController', function($scope, $routeParams, $firebaseArray, $firebase, $firebaseObject) {
   $scope.roomId = $routeParams.roomId;
+  var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
+  var messages = ref.child($scope.roomId+"/messages");
+  $scope.messages = $firebaseArray(messages);
+
+  $scope.user = "";
+  $scope.message = "";
+
+  $scope.addMessage = function() {
+    $scope.messages.$add({
+      user: $scope.user,
+      text: $scope.message
+    }).then(function(ref){
+      $scope.message = "";
+    });
+  }
+  
 });
