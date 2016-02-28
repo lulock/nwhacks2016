@@ -1,12 +1,12 @@
 var Firebase = require("firebase");
 
 // create our angular module and inject firebase
-angular.module('theatre', ['firebase'])
+angular.module('theatreApp', ['firebase', 'ngRoute'])
 
 
 // create our main controller and get access to firebase
 .controller('mainController', function($scope, $firebase) {
-  
+
   // our application code will go here
-  
+
 });
