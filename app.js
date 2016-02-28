@@ -53,6 +53,7 @@ app.controller('MainController', function($scope) {
 				console.log("Login Failed!", error);
 			} else {
 				console.log("Authenticated successfully with payload:", authData);
+        $scope.$apply();
 			}
 		});
 	};
