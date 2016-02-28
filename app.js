@@ -75,7 +75,6 @@ app.controller('MainController', function($scope) {
 	}
 
 	$scope.getUsername = function() {
-		console.log("Get username");
 		if (ref.getAuth() == null) return "";
 		console.log(ref.getAuth().uid);
 		var usernameRef = ref.child("users").child(ref.getAuth().uid).child("username");
@@ -115,7 +114,8 @@ app.controller('HomeController', function($scope, $firebaseArray, $firebase, $fi
 				  roomDesc: form.roomDesc,
 				  youtubeUrl: form.youtubeUrl,
 				  messages: [],
-          currentTime: 0
+          currentTime: 0,
+          currentState : -1
 			  }).then(function(ref){
 				  var roomNumber = ref.key();
           ref.child('id').set(roomNumber);
@@ -202,7 +202,7 @@ app.controller('RoomController', function($rootScope, $scope, $routeParams, $fir
         videoId: $scope.getId(newValue.youtubeUrl),
         events: {
           'onReady': $scope.onPlayerReady,
-          // 'onStateChange': onPlayerStateChange
+          'onStateChange': $scope.onPlayerStateChange
         }
       });
     });
@@ -213,27 +213,49 @@ app.controller('RoomController', function($rootScope, $scope, $routeParams, $fir
   $scope.onPlayerReady = function(event) {
     // console.log($scope.roomRef.child('currentTime').toString());
     event.target.playVideo();
+
+    $scope.currentStateRef = $scope.roomRef.child('currentState');
+    $scope.currentStateRef.on("value", function(snapshot){
+      switch(snapshot.val()) {
+        case -1: //unstarted
+          break;
+        case YT.PlayerState.ENDED:
+          break;
+        case YT.PlayerState.PLAYING:
+          event.target.playVideo();
+          break;
+        case YT.PlayerState.PAUSED: 
+          event.target.pauseVideo();
+          break;
+        case YT.PlayerState.BUFFERING:
+          break;
+        case YT.PlayerState.CUED:
+          break;
+        default:
+          break;
+      }
+    })
+
     $scope.currentTimeRef = $scope.roomRef.child('currentTime');
     $scope.currentTimeRef.on("value", function(snapshot){
-      event.target.seekTo(snapshot.val());
+      if (snapshot.val() > $scope.player.getCurrentTime()) {
+        event.target.seekTo(snapshot.val());  
+      }
     })
     
     setInterval(function(){
        room.update({currentTime: $scope.player.getCurrentTime()});
     },500);
+
+
   }
 
-  // 5. The API calls this function when the player's state changes.
-  //    The function indicates that when playing a video (state=1),
-  //    the player should play for six seconds and then stop.
-  // var done = false;
-  // function onPlayerStateChange(event) {
-  //   console.log($scope.player.getCurrentTime());
-  //   if (event.data == YT.PlayerState.PLAYING && !done) {
-  //     setTimeout(stopVideo, 6000);
-  //     done = true;
-  //   }
-  // }
+  
+  $scope.onPlayerStateChange = function(event) {
+    
+    room.update({currentState: event.data});
+    
+  }
   // function stopVideo() {
   //   $scope.player.stopVideo();
   // }
