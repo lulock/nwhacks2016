@@ -20,6 +20,38 @@ app.config(['$routeProvider',
 app.controller('HomeController', function($scope, $firebaseArray, $firebase, $firebaseObject) {
 
   var ref = new Firebase("https://thea2gether.firebaseio.com/rooms");
+
+  $scope.createUser = function(email, password, username) {
+  	ref.createUser({
+  		email: email,
+  		password: password,
+  	}, function(errorUserData) {
+  		if (error) {
+  			console.log("Error creating user:", error);
+  		} else {
+  			// storing user's username
+  			var userRef = new ref.child("users/" + userData.uid);
+  			userRef.set({
+  				username: username
+  			});
+  			console.log("Successfully created user account with uid:", userData.uid);
+  		}
+  	});
+  };
+
+  $scope.loginUser = function(email, password) {
+  	ref.authWithPassword({
+  		email    : email,
+  		password : password
+  	}, function(error, authData) {
+  		if (error) {
+  			console.log("Login Failed!", error);
+  		} else {
+  			console.log("Authenticated successfully with payload:", authData);
+  		}
+  	});
+  };
+
   // create a synchronized array
   $scope.rooms = $firebaseArray(ref);
 
