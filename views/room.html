@@ -6,7 +6,15 @@
 		<p ng-bind="message.text"></p>
 	</div>
 </div>
-<input type="text" name="user" ng-model="user" placeholder="Name">
-<form ng-submit="addMessage()">
-	<input type="text" name="text" ng-model="message" placeholder="Message">
-</form>
+<!-- <input type="text" name="user" ng-model="user" placeholder="Name"> -->
+{{rootScope.authData}}
+<div ng-show="rootScope.authData">
+	<form ng-submit="addMessage()">
+		<label ng-bind="getUsername()"></label>
+		<input type="text" name="text" ng-model="message" placeholder="Message">
+	</form>
+</div>
+<div ng-hide="rootScope.authData">
+	<p>Please login to leave messages</p>
+</div>
+
