@@ -21,7 +21,7 @@
 </head>
 <body ng-app="theatreApp" ng-controller="MainController">
     <div class="page-header text-center">       
-    <h1>thea2gether</h1>        
+    <a ng-href="#/"><h1>thea2gether</h1></a>
     <form ng-submit="createUser(createUserData)" ng-hide="isLoggedIn()">
       <input ng-model="createUserData.email" placeholder="Email"/>
       <input ng-model="createUserData.username"placeholder="Username"/>
