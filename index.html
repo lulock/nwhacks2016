@@ -1,33 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Angular Scheduling</title>
+  <meta charset="UTF-8">
+  <title>Thea-together</title>
 
-    <!-- CSS -->
-    <!-- load Bootstrap and custom style.css -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.0/journal/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+  <!-- CSS -->
+  <!-- load Bootstrap and custom style.css -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.3.0/journal/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
-    <!-- JS -->
-    <!-- load Angular, Firebase, Firebase Angular Library, and custom app.js -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
-    <script src="https://cdn.firebase.com/js/client/1.1.1/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js"></script>
-    <script src="app.js"></script>
+  <!-- JS -->
+  <!-- load Angular, Firebase, Firebase Angular Library, and custom app.js -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+  <script src="app.js"></script>
 </head>
 <body>
-<div class="container" ng-app="theatreApp" ng-controller="mainController">
-  
-  <div class="page-header text-center">       
-    <h1>Thea-together</h1>        
-  </div>
+  <div class="container" ng-app="theatreApp" ng-controller="mainController">
 
-  <p class="text-center">    
-    <a href="#" class="btn btn-primary">Enter</a>
-  </p>
+    <div class="page-header text-center">       
+      <h1>Thea-together</h1>        
+    </div>
 
-</div>  
+    <p class="text-center">    
+      <a href="#" class="btn btn-primary">Enter</a>
+    </p>
+
+
+
+    <ul>
+      <li ng-repeat="room in rooms">
+        <p>
+          <span ng-bind="room.roomTitle"></span>
+          <span ng-bind="room.roomDesc"></span>
+          <span ng-bind="room.youtubeUrl"></span>
+        </p>
+      </li>
+    </ul>
+    <!-- push a new message onto the array -->
+    <form ng-submit="addRoom(form)">
+      <input ng-model="form.roomTitle"/>
+      <input ng-model="form.roomDesc"/>
+      <input ng-model="form.youtubeUrl"/>
+      <button type="submit">Add Room</button>
+    </form>
+
+
+
+
+  </div>  
 </body>
 </html>
