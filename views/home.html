@@ -13,6 +13,24 @@
     <div class="panel-body">
     <div class="container">
         <div class="row">
+            <ul>
+              <li ng-repeat="room in rooms">
+                <p>
+                  <span ng-bind="room.roomTitle"></span>
+                  <span ng-bind="room.roomDesc"></span>
+                  <span ng-bind="room.youtubeUrl"></span>
+                </p>
+              </li>
+            </ul>
+            <!-- push a new message onto the array -->
+            <form ng-submit="addRoom(form)">
+              <input ng-model="form.roomTitle"/>
+              <input ng-model="form.roomDesc"/>
+              <input ng-model="form.youtubeUrl"/>
+              <button type="submit">Add Room</button>
+            </form>
+        </div>
+        <div class="row">
              <div class="col-sm-6 col-md-3">
                 <div class="panel panel-default panel-card">
                     <div class="panel-heading">
